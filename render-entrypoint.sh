@@ -1,9 +1,7 @@
 #!/usr/bin/env sh
 set -eu
 
-# Default to 4000 if PORT isn’t set (local runs)
-: "${PORT:=4000}"
-
+: "${PORT:=8000}"                       # default for local runs
 export KONG_PROXY_LISTEN="0.0.0.0:${PORT}"
 export KONG_ADMIN_LISTEN="off"
 
