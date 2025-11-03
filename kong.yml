@@ -8,6 +8,9 @@ services:
     connect_timeout: 6000
     write_timeout: 60000
     routes:
+      - name: root
+        paths: ["/"]
+        strip_path: false
       - name: api
         paths: ["/api"]
         strip_path: false
