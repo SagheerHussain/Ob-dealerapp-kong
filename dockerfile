@@ -1,17 +1,21 @@
 FROM kong:3.6
 
-# become root to write into system paths
+# Need root to install files
 USER root
 
+# Declarative config (DB-less)
 COPY kong.yml /etc/kong/kong.yml
 COPY render-entrypoint.sh /usr/local/bin/render-entrypoint.sh
 RUN chmod 755 /usr/local/bin/render-entrypoint.sh \
  && chown kong:0 /usr/local/bin/render-entrypoint.sh
 
-ENV KONG_DATABASE=off
-ENV KONG_DECLARATIVE_CONFIG=/etc/kong/kong.yml
-ENV KONG_ADMIN_LISTEN=off
+# Kong defaults (lightweight for Render Free)
+ENV KONG_DATABASE=off \
+    KONG_DECLARATIVE_CONFIG=/etc/kong/kong.yml \
+    KONG_ADMIN_LISTEN=off \
+    KONG_NGINX_WORKER_PROCESSES=1 \
+    KONG_LOG_LEVEL=notice
 
-# drop back to the kong user for runtime
+# Run as kong user
 USER kong
 ENTRYPOINT ["/usr/local/bin/render-entrypoint.sh"]
